@@ -75,9 +75,9 @@ def Tn(data, d):
 	return Tn;
 
 
-# calculates p-value and estimate of change point
+# calculates test statistic and estimate of change point
 def MoM_changepoint(data, d):
 	tn = Tn(data, d)
-	p = np.max(tn)
+	t = np.max(tn)
 	u = np.argmax(tn)/len(data)
-	return (p, u)
+	return (t, u)
