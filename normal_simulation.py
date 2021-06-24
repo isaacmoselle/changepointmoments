@@ -23,7 +23,7 @@ for i in range(0, n):
 		sample[j] = np.random.normal(0,sig1**0.5)
 	for j in range(round(sample_size*change_point)+1, sample_size):
 		sample[j] = np.random.normal(0,sig2**0.5)
-	(p, u) = main.MoM_changepoint(sample, 2)
+	(t, u) = main.MoM_changepoint(sample, 2)
 	change_point_estimates[i] = u
 
 plt.hist(change_point_estimates, 20, color="darkslategrey")

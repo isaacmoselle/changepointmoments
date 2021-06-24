@@ -1,5 +1,5 @@
 import numpy as np
-import time
+
 
 """
 provides functions for calculating the proposed change point statistic, and the 
@@ -59,14 +59,12 @@ def Tn(data, d):
 
 	#holds difference between the moments for each element and the average moments
 	delta = np.zeros((d, n))
-	a = time.time()
 	for k in range(0, n):
 		delta[:, k] = data[k]**(np.arange(d) + 1) -  sample_moments
 
 	for k in range(1, n+1):
 		#computes partial sums
 		Zn[:,k] = np.sum(delta[:,:k], axis=1)/n
-	b = time.time()
 
 	sig_inv = np.linalg.inv(cov_estimate(data, d))
 
