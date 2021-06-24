@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 simulation of brownian bridge in order to find quantiles of test statistic
 """
 
-n = 100
+n = 200
 iterations = 10000
 d = 2
 
@@ -17,11 +17,15 @@ for i in range(0, iterations):
 	#first simulate d dimensional brownian motion
 	brownian = np.zeros((d,n+1))
 	for j in range(1,n+1):
-		brownian[:, j] = np.sum(steps[:j, i, :])/n**0.5
+		brownian[:, j] = steps[j-1, i, :] + brownian[:, j-1]
+	brownian /= n**0.5
+
 	#convert to browian bridge
-	for j in range(1,n+1):
-		brownian[:, j] = np.linalg.norm((brownian[:, j] - brownian[:, n]*(j/n)));
-	sample[i] = np.max(brownian)
+	modulus = np.zeros(n+1)
+	for j in range(0,n+1):
+		modulus[j] = np.linalg.norm((brownian[:, j] - brownian[:, n]*(j/n)))**2;
+	sample[i] = np.max(modulus)
 	print(i)
 
 np.savetxt('brownian_bridge_sample.dat', sample)
+print(np.quantile(sample, 0.95))
