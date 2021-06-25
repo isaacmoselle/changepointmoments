@@ -13,12 +13,12 @@ sample_size = 50
 alpha = 2
 lamb = 1
 
-n = 100
+n = 10000
 test_statistic = np.zeros(n)
 
 sample = np.random.gamma(alpha, 1/lamb, (n, sample_size))
 for i in range(0, n):
-	(t, u) = main.MoM_changepoint2(sample[i, :])
+	(t, u) = main.MoM_changepoint(sample[i, :],2)
 	test_statistic[i] = t
 
 # finds p-value for each sample
