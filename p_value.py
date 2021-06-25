@@ -9,19 +9,16 @@ to find emperical size of test
 """
 
 sample_size = 50
-m = 25
 
-alpha = 1
-lamb = 0.01
+alpha = 2
+lamb = 1
 
 n = 100
 test_statistic = np.zeros(n)
 
+sample = np.random.gamma(alpha, 1/lamb, (n, sample_size))
 for i in range(0, n):
-	#sample = np.random.gamma(alpha,1/lamb, sample_size)
-	sample = np.concatenate((np.random.gamma(1, 1/0.01, m),
-							 np.random.gamma(1, 1/0.05, sample_size-m)))
-	(t, u) = main.MoM_changepoint(sample, 2)
+	(t, u) = main.MoM_changepoint2(sample[i, :])
 	test_statistic[i] = t
 
 # finds p-value for each sample

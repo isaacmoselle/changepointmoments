@@ -1,4 +1,5 @@
 import main
+import alternative_statistic
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -23,7 +24,7 @@ m = round(sample_size*change_point)
 for i in range(0, n):
 	sample = np.concatenate((np.random.gamma(alpha1, 1/lamb1, m),
 							 np.random.gamma(alpha2, 1/lamb2, sample_size-m)))
-	(t, u) = main.MoM_changepoint(sample, 2)
+	(t, u) = main.MoM_changepoint(sample, 3)
 	change_point_estimates[i] = u
 
 plt.hist(change_point_estimates, 30, color="darkslategrey")

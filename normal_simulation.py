@@ -18,12 +18,9 @@ n = 1000
 change_point_estimates = np.zeros(n)
 
 for i in range(0, n):
-	sample = np.zeros(sample_size)
-	for j in range(0, round(sample_size*change_point)):
-		sample[j] = np.random.normal(0,sig1**0.5)
-	for j in range(round(sample_size*change_point)+1, sample_size):
-		sample[j] = np.random.normal(0,sig2**0.5)
-	(t, u) = main.MoM_changepoint(sample, 2)
+	sample = np.concatenate((np.random.normal(0, sig1, m),
+							 np.random.gamma(0, sig2, sample_size-m)))
+	(t, u) = main.MoM_changepoint(sample, 3)
 	change_point_estimates[i] = u
 
 plt.hist(change_point_estimates, 20, color="darkslategrey")
