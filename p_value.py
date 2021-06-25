@@ -9,15 +9,18 @@ to find emperical size of test
 """
 
 sample_size = 50
+m = 25
 
 alpha = 1
-theta = 1
+lamb = 0.01
 
-n = 1000
+n = 100
 test_statistic = np.zeros(n)
 
 for i in range(0, n):
-	sample = np.random.gamma(alpha,1/theta, sample_size)
+	#sample = np.random.gamma(alpha,1/lamb, sample_size)
+	sample = np.concatenate((np.random.gamma(1, 1/0.01, m),
+							 np.random.gamma(1, 1/0.05, sample_size-m)))
 	(t, u) = main.MoM_changepoint(sample, 2)
 	test_statistic[i] = t
 
@@ -33,4 +36,3 @@ plt.show()
 
 # emperical size of 0.05 test
 print((p_values <= 0.05).sum())
-print((test_statistic > 2.35).sum())

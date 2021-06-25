@@ -6,8 +6,8 @@ import matplotlib.pyplot as plt
 simulation of brownian bridge in order to find quantiles of test statistic
 """
 
-n = 200
-iterations = 10000
+n = 500
+iterations = 1000
 d = 2
 
 sample = np.zeros(iterations)

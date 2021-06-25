@@ -13,18 +13,16 @@ change_point = 0.75
 
 alpha1 = 1
 alpha2 = 1
-theta1 = 0.01
-theta2 = 0.05
+lamb1 = 0.01
+lamb2 = 0.05
 
 n = 1000
 change_point_estimates = np.zeros(n)
+m = round(sample_size*change_point)
 
 for i in range(0, n):
-	sample = np.zeros(sample_size)
-	for j in range(0, round(sample_size*change_point)):
-		sample[j] = np.random.gamma(alpha1,1/theta1)
-	for j in range(round(sample_size*change_point)+1, sample_size):
-		sample[j] = np.random.gamma(alpha2,1/theta2)
+	sample = np.concatenate((np.random.gamma(alpha1, 1/lamb1, m),
+							 np.random.gamma(alpha2, 1/lamb2, sample_size-m)))
 	(t, u) = main.MoM_changepoint(sample, 2)
 	change_point_estimates[i] = u
 
