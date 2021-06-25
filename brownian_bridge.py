@@ -7,7 +7,7 @@ simulation of brownian bridge in order to find quantiles of test statistic
 """
 
 n = 1000
-iterations = 10000
+iterations = 100000
 d = 2
 
 sample = np.zeros(iterations)
@@ -24,6 +24,4 @@ for i in range(0, iterations):
 	print(i)
 
 np.savetxt('brownian_bridge_sample.dat', sample)
-plt.plot(np.linalg.norm(brownian, axis=0))
-plt.show()
 print(np.quantile(sample, 0.95))
