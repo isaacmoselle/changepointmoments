@@ -1,4 +1,6 @@
 import numpy as np
+import matplotlib.pyplot as plt
+import time
 
 
 """
@@ -6,9 +8,8 @@ provides functions for calculating the proposed change point statistic, and the
 estimate of the change point, for samples from an unspecified distribution
 """
 
-# calculates test statistic and estimate of change point for general psi
-def generalised_changepoint(data, psi):
-	data = np.array([psi(i) for i in data]).T
+# calculates test statistic and estimate of change point for general data, post psi
+def generalised_changepoint(data):
 	(d, n) = np.shape(data)
 
 	#normalises
@@ -25,19 +26,15 @@ def generalised_changepoint(data, psi):
 	sig_inv = np.linalg.inv(np.cov(data, rowvar=True)*(n-1)/n)
 
 	#calculates variance-normalised magnitudes of brownian bridge
-	tn = np.zeros(n)
-	for i in range(1, n):
-		tn[i] = np.inner(brownian[:, i], np.matmul(sig_inv, brownian[:, i]))
+	tn = np.einsum('ij,ij -> j', brownian, np.matmul(sig_inv,brownian))
 
 	#t is test statistic, u is change point estimator
 	t = np.max(tn)
 	u = (np.argmax(tn)+1)/n
 	return (t, u)
 
-# gives first d moments of x
-def moments(x, d):
-	return x**(np.arange(d)+1)
-
 # generalised test with psi as in MoM
 def MoM_changepoint(data, d):
-	return generalised_changepoint(data, lambda x: moments(x, d))
+	#computes first d moments of data
+	data = np.vstack([data**i for i in np.arange(d) + 1 ])
+	return generalised_changepoint(data)
