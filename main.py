@@ -31,10 +31,40 @@ def generalised_changepoint(data):
 	#t is test statistic, u is change point estimator
 	t = np.max(tn)
 	u = (np.argmax(tn)+1)/n
+	"""
+	plt.plot(tn/n)
+	plt.show()
+	"""
+	return (t, u)
+
+# as above, but for one dimensional data set
+def small_changepoint(data):
+	n = len(data)
+
+	#normalises
+	data -= np.mean(data)
+
+	#constructs brownian motion
+	brownian = np.cumsum(data)
+	brownian /= n**0.5
+
+	#converts to brownian bridge
+	brownian -= brownian[n-1]*(np.arange(n)+1)/n
+
+	#calculates variance-normalised magnitudes of brownian bridge
+	tn = brownian**2/(np.var(data)*(n-1)/n)
+
+	#t is test statistic, u is change point estimator
+	t = np.max(tn)
+	u = (np.argmax(tn)+1)/n
+
 	return (t, u)
 
 # generalised test with psi as in MoM
 def MoM_changepoint(data, d):
-	#computes first d moments of data
-	data = np.vstack([data**i for i in np.arange(d) + 1 ])
-	return generalised_changepoint(data)
+	if d !=1:
+		#computes first d moments of data
+		data = np.vstack([data**i for i in np.arange(d) + 1 ])
+		return generalised_changepoint(data)
+	else:
+		return small_changepoint(data)
